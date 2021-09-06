@@ -1,14 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+    <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="arc3-ipfs is a simple example of implementing Algorand ASA Ops using JS SDK with IPFS and in compliance to ARC3">
     <meta name="author" content="@emg110">
     <title>ARC3-IPFS</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-  </body>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <!-- Matarial icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Font Awsome -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="./style.css">
+
+    <!-- Gsap/ min -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"
+        integrity="sha512-cdV6j5t5o24hkSciVrb8Ki6FveC2SgwGfLE31+ZQRHAeSRxYhAQskLkq3dLm8ZcWe1N3vBOEYmmbhzf7NTtFFQ=="
+        crossorigin="anonymous"></script>
+    <!-- Gsap / Scroll to Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/ScrollToPlugin.min.js"
+        integrity="sha512-kSI9CgGh60rJbNVeMJvfNX0UTKAq8LEOea/yKJQbFpIroxT7bf9/zUFXbnfsQP5F6xlOOHtCfBPgsE1ceiHnRw=="
+        crossorigin="anonymous"></script>
+    <!-- jQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js" integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg==" crossorigin="anonymous"></script>
+
+    <script defer src="./arc3-ipfs.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@pinata/sdk@1.1.23/lib/pinata-sdk.min.js"crossorigin="anonymous"></script>
+    <script  src="bs58Bundle.js"></script>
+    </head>
+    <body>
+        <script>
+            function fnMove(seq) {
+                var offset = $("#section" + seq).offset();
+                $('html, body').animate({
+                    scrollTop: offset.top
+                }, 400);
+                function convertIpfsCidV0ToByte32(cid) {
+                    return `${bs58.decode(cid).slice(2).toString('hex')}`;
+                }
+                function convertByte32ToIpfsCidV0(str) {
+                    if (str.indexOf('0x') === 0) {
+                        str = str.slice(2);
+                    }
+                    return bs58.encode(bs58.Buffer.from(`1220${str}`, 'hex'));
+                }
+            }
+        </script>
+    <div class="site-wrapper">
+        <div class="arc3ipfs-section">
+            <div class="navbar">
+            <div class="content-wrapper nav">
+                <a href="" class="logo">
+                <div id="section1"></div>
+                <div class="arc3ipfs-logo">
+                    ARC3::IPFS
+                </div>
+                </a>
+                <div class="nav-link-wrapper">
+                <ul class="menu">
+                    <li>
+                    <a href="https://github.com/emg110/arc3-ipfs" target="_blank" class="nav-link"><i class="fab fa-github"></i>ARC3-IPFS Repo</a>
+                    </li>
+                    <li>
+                    <a href="https://github.com/algorandfoundation/ARCs/issues/3" target="_blank" class="nav-link"><i class="fab fa-github"></i>Algorand ARC3</a>
+                    </li>
+                    <li>
+                    <a href="https://github.com/emg110/ipfs2bytes32" target="_blank" class="nav-link"><i class="fab fa-github"></i>ipfs2bytes32</a>
+                    
+                
+                    </li>
+                </ul>
+                </div>
+                <div class="account">
+                <a href="javascript:void(0)" class="icon-wallet">
+                    <div><i class="far fa-wallet"></i></div>
+                    <div>MyAlgo</div>
+                </a>
+                </div>
+            </div>
+            </div>
+        <div class="content-wrapper arc3ipfs">
+            <div class="social-link">
+            <div class="text-block">@emg110</div>
+            <br>
+            <div class="icon social"><i class="fab fa-github"></i></div>
+            <div class="icon social"><i class="fab fa-twitter"></i></div>
+            <div class="icon social"><i class="fab fa-linkedin"></i></div>
+            </div>
+            <div class="content-arc3ipfs">
+            <div class="tagline">
+                <div class="tagline-line"></div>
+                <h5 class="heading-tagline">Algorand ARC3 compliant scenarios</h5>
+            </div>
+            <div class="h1-title">
+                <h1>
+                Create Algorand NFT using IPFS & complying to ARC3
+                </h1>
+            </div>
+            <div id="to-bottom">
+                <span>Links</span>
+                <div class="material-icons">
+                arrow_downward
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="nav-slider">
+            <div class="nav-slider-links">
+            <a href="javascript:void(0)" onclick="fnMove(1)" class="slider-link">ARC3::IPFS</a>
+            <a href="javascript:void(0)" onclick="fnMove(2)" class="slider-link">Pinata</a>
+            <a href="javascirpt:void(0)" onclick="fnMove(3)" class="slider-link">SC-1</a>
+            <a href="javascirpt:void(0)" onclick="fnMove(4)" class="slider-link">SC-2</a>
+            </div>
+            <div class="indicator-line">
+            <div class="indicator"></div>
+            </div>
+        </div>
+        <img src="./images/HG.png" class="hg" alt="hg">
+        <img src="./images/MG.png" class="mg" alt="mg">
+        <img src="./images/VG.png" class="vg" alt="vg">
+        <div class="gradient-arc3ipfs"></div>
+        </div>
+
+        <div class="content-section">
+
+        <div id="section2">
+            <div class="content-wrapper content">
+            <div class="grid">
+                <div class="content-text">
+                <div class="count">Pinata</div>
+                <div class="tagline">
+                    <div class="tagline-line"></div>
+                    <h5 class="heading-tagline">Upload NFT file</h5>
+                </div>
+                <h2>Upload and Pin with Pinata</h2>
+                <p>
+                    <a href="https://pinata.cloud" target="_blank" class="nav-link"></i>Pinata Cloud</a>is an IPFS API service for uploading, pinning & management of your IPFS resources.
+                    With Pinata API and Client there will be no need to use other thechnologies which rely on other blockchains and as they are using Pinata to have a better managed access to IPFS without the need to have a local IPFS node installed.                 
+                    
+                </p>
+                <a href="" class="link-to arc3ipfs">
+                    <div>Home</div>
+                    <div class="material-icons">
+                    arrow_forward
+                    </div>
+                </a>
+                </div>
+                <img style="opacity: 0.4;" src="./images/pinata.png" alt="img_post1">
+            </div>
+            </div>
+        </div>
+
+            <div id="section3">
+            <div class="content-wrapper content">
+                <div class="grid">
+                <img src="./images/HG.png" alt="img_post2">
+                <div class="content-text">
+                    <div class="count-right">SC1</div>
+                    <div class="tagline">
+                    <div class="tagline-line"></div>
+                    <h5 class="heading-tagline">Scenario 1</h5>
+                    </div>
+                    <h2>File and Metadata to IPFS separatedly and sequently</h2>
+                    <p>
+                        File --> IPFS --> Metadata --> IPFS --> ASA metadatahash field
+                    </p>
+                    <a href="" class="link-to arc3ipfs">
+                    <div>Home</div>
+                    <div class="material-icons">
+                        arrow_forward
+                    </div>
+                    </a>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="section4">
+            <div class="content-wrapper content">
+                <div class="grid">
+                <div class="content-text">
+                    <div class="count">SC2</div>
+                    <div class="tagline">
+                    <div class="tagline-line"></div>
+                    <h5 class="heading-tagline">Scenario 2</h5>
+                    </div>
+                    <h2>File & Metadata both ina folder</h2>
+                    <p>
+                        File + Metadata --> Folder --> IPFS --> ASA metadatahash field
+                    </p>
+                    <a href="" class="link-to arc3ipfs">
+                    <div>Home</div>
+                    <div class="material-icons">
+                        arrow_forward
+                    </div>
+                    </a>
+                </div>
+                <img src="./images/MG.png" alt="img_post3">
+                </div>
+            </div>
+            </div>
+            <div class="footer">
+            <div class="content-wrapper content footer">
+                <div class="grid footer">
+                <div class="footer-left">
+                    <div class="top">
+                    <a href="" class="logo">
+                        <div class="arc3ipfs-logo">
+                        ARC3::IPFS
+                        </div>
+                    </a>
+                    <div class="footer-text">
+                        Use Algorand ARC3 Compliance in NFT generation with IPFS using <a href="https://pinata.cloud" style="text-decoration:underline; color: rgb(195, 250, 252)" target="_blank"></i>Pinata API</a>
+                    </div>
+                    </div>
+                    <div class="copyright">
+                    All mentions and notions of Algorand and Algo are curtsey of <a href="https://algorand.com" style="text-decoration:underline; color: rgb(195, 250, 252)" target="_blank"></i>Algorand</a> 
+                    <br>
+                    With love for Algorand community By <a href="https://github.com/emg110" target="_blank" class="author">@emg110</a>
+                    </div>
+                </div>
+                <div class="footer-right">
+                    <div class="links">
+                    <div class="footer-links">
+                        <h4>Read on NFT & IPFS</h4>
+                        <a href="https://docs.ipfs.io/how-to/best-practices-for-nft-data/" target="_blank" class="footer-link">IPFS: Best Practices for NFT data</a>
+                        <a href="https://docs.ipfs.io/how-to/mint-nfts-with-ipfs" target="_blank" class="footer-link">IPFS: Mint NFTs with IPFS</a>
+                        <a href="https://flyingzumwalt.gitbooks.io/decentralized-web-primer/content/files-on-ipfs/lessons/wrap-directories-around-content.html" target="_blank" class="footer-link">IPFS: Wrap in Directory</a>
+                        <a href="https://docs.ipfs.io/concepts/content-addressing/#identifier-formats" target="_blank" class="footer-link">IPFS CID: Versions</a>
+                        <a href="https://proto.school/anatomy-of-a-cid" target="_blank" class="footer-link">IPFS CID: Anatomy of CID multihash</a>
+                        <a href="https://github.com/multiformats/cid/blob/ef1b2002394b15b1e6c26c30545fd485f2c4c138/README.md#cidv0" target="_blank" class="footer-link">IPFS CID: On GitHub</a>
+                        <a href="https://docs.pinata.cloud/api-pinning/pin-file#file" target="_blank" class="footer-link">Pinata: pin File</a>
+                        <a href="https://docs.pinata.cloud/api-pinning/pin-json" target="_blank" class="footer-link">Pinata: Pin JSON</a>
+
+            
+                    </div>
+                    <div class="footer-links">
+                        <h4>Algorand ARC3</h4>
+                        <a href="https://github.com/algorandfoundation/ARCs/blob/main/ARCs/arc-0003.md" target="_blank" class="footer-link">The ARC3 document</a>
+                        <a href="https://github.com/algorandfoundation/ARCs/issues/3" target="_blank" class="footer-link">ARC3 conversation</a>
+                        <a href="https://github.com/algorandfoundation/ARCs/issues/3#issuecomment-913541426" target="_blank" class="footer-link">ARC3 refferenced comment</a>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </body>
 </html>
