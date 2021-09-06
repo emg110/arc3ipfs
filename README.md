@@ -6,6 +6,8 @@ This repository is a simple example of implementation of Algorand ASA Ops using 
 
 [ARC0003 Related comment](https://github.com/algorandfoundation/ARCs/issues/3#issuecomment-913541426)
 
+[IPFS2BYTES32 Gists and examples repo](https://github.com/emg110/ipfs2bytes32)
+
 ![ASA _--_ IPFS scenarios](https://user-images.githubusercontent.com/1900448/132204857-69626a0f-b986-48ef-bbc0-27082c0653a2.png)
 
 
