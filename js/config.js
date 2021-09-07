@@ -1,4 +1,4 @@
-export const config = {
+module.exports = {
     pinataApiKey: "cc5751d62a904d462d35",
     pinataSecretApiKey: "c34be406e8dbce0d1b2ff5260503395a3297ac3b2e76ecead0b851d2fc953f1d",
     pinataFileUrl: "https://api.pinata.cloud/pinning/pinFileToIPFS",
