@@ -1,6 +1,6 @@
 export const config = {
-    pinataApiKey: "fe8183e03b87acbe7c12",
-    pinataSecretApiKey: "6706d784fdec717857caae130fb76f26a84ac8d346fd37393b6f790a114dcac4",
+    pinataApiKey: "cc5751d62a904d462d35",
+    pinataSecretApiKey: "c34be406e8dbce0d1b2ff5260503395a3297ac3b2e76ecead0b851d2fc953f1d",
     pinataFileUrl: "https://api.pinata.cloud/pinning/pinFileToIPFS",
     pinataJSONUrl: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
     arc3MetadataJSON: {
