@@ -257,7 +257,7 @@ img {
 .nav-slider-links {
     position: relative;
     display: flex;
-    width: 120px;
+    width: 100px;
     flex-direction: column;
     align-items: flex-end;
     font-weight: 700;
