@@ -38,124 +38,117 @@
                 $('html, body').animate({
                     scrollTop: offset.top
                 }, 400);
-                function convertIpfsCidV0ToByte32(cid) {
-                    return `${bs58.decode(cid).slice(2).toString('hex')}`;
-                }
-                function convertByte32ToIpfsCidV0(str) {
-                    if (str.indexOf('0x') === 0) {
-                        str = str.slice(2);
-                    }
-                    return bs58.encode(bs58.Buffer.from(`1220${str}`, 'hex'));
-                }
+              
             }
         </script>
-    <div class="site-wrapper">
-        <div class="arc3ipfs-section">
-            <div class="navbar">
-            <div class="content-wrapper nav">
-                <a href="" class="logo">
-                <div id="section1"></div>
-                <div class="arc3ipfs-logo">
-                    ARC3::IPFS
-                </div>
-                </a>
-                <div class="nav-link-wrapper">
-                <ul class="menu">
-                    <li>
-                    <a href="https://github.com/emg110/arc3-ipfs" target="_blank" class="nav-link"><i class="fab fa-github"></i>ARC3-IPFS Repo</a>
-                    </li>
-                    <li>
-                    <a href="https://github.com/algorandfoundation/ARCs/issues/3" target="_blank" class="nav-link"><i class="fab fa-github"></i>Algorand ARC3</a>
-                    </li>
-                    <li>
-                    <a href="https://github.com/emg110/ipfs2bytes32" target="_blank" class="nav-link"><i class="fab fa-github"></i>ipfs2bytes32</a>
-                    
-                
-                    </li>
-                </ul>
-                </div>
-                <div class="account">
-                <a href="javascript:void(0)" class="icon-wallet">
-                    <div><i class="far fa-wallet"></i></div>
-                    <div>MyAlgo</div>
-                </a>
-                </div>
-            </div>
-            </div>
-        <div class="content-wrapper arc3ipfs">
-            <div class="social-link">
-            <div class="text-block">@emg110</div>
-            <br>
-            <div class="icon social"><i class="fab fa-github"></i></div>
-            <div class="icon social"><i class="fab fa-twitter"></i></div>
-            <div class="icon social"><i class="fab fa-linkedin"></i></div>
-            </div>
-            <div class="content-arc3ipfs">
-            <div class="tagline">
-                <div class="tagline-line"></div>
-                <h5 class="heading-tagline">Algorand ARC3 compliant scenarios</h5>
-            </div>
-            <div class="h1-title">
-                <h1>
-                Create Algorand NFT using IPFS & complying to ARC3
-                </h1>
-            </div>
-            <div id="to-bottom">
-                <span>Links</span>
-                <div class="material-icons">
-                arrow_downward
-                </div>
-            </div>
-            </div>
-        </div>
-        <div class="nav-slider">
-            <div class="nav-slider-links">
-            <a href="javascript:void(0)" onclick="fnMove(1)" class="slider-link">ARC3::IPFS</a>
-            <a href="javascript:void(0)" onclick="fnMove(2)" class="slider-link">Pinata</a>
-            <a href="javascirpt:void(0)" onclick="fnMove(3)" class="slider-link">SC-1</a>
-            <a href="javascirpt:void(0)" onclick="fnMove(4)" class="slider-link">SC-2</a>
-            </div>
-            <div class="indicator-line">
-            <div class="indicator"></div>
-            </div>
-        </div>
-        <img src="./images/HG.png" class="hg" alt="hg">
-        <img src="./images/MG.png" class="mg" alt="mg">
-        <img src="./images/VG.png" class="vg" alt="vg">
-        <div class="gradient-arc3ipfs"></div>
-        </div>
-
-        <div class="content-section">
-
-        <div id="section2">
-            <div class="content-wrapper content">
-            <div class="grid">
-                <div class="content-text">
-                <div class="count">Pinata</div>
-                <div class="tagline">
-                    <div class="tagline-line"></div>
-                    <h5 class="heading-tagline">Upload NFT file</h5>
-                </div>
-                <h2>Upload and Pin with Pinata</h2>
-                <p>
-                    <a href="https://pinata.cloud" target="_blank" class="nav-link"></i>Pinata Cloud</a>is an IPFS API service for uploading, pinning & management of your IPFS resources.
-                    With Pinata API and Client there will be no need to use other thechnologies which rely on other blockchains and as they are using Pinata to have a better managed access to IPFS without the need to have a local IPFS node installed.                 
-                    
-                </p>
-                <a href="" class="link-to arc3ipfs">
-                    <div>Home</div>
-                    <div class="material-icons">
-                    arrow_forward
+        <div class="site-wrapper">
+            <div class="arc3ipfs-section">
+                <div class="navbar">
+                    <div class="content-wrapper nav">
+                        <a href="" class="logo">
+                        <div id="section1"></div>
+                        <div class="arc3ipfs-logo">
+                            ARC3::IPFS
+                        </div>
+                        </a>
+                        <div class="nav-link-wrapper">
+                        <ul class="menu">
+                            <li>
+                            <a href="https://github.com/emg110/arc3-ipfs" target="_blank" class="nav-link"><i class="fab fa-github"></i>ARC3-IPFS Repo</a>
+                            </li>
+                            <li>
+                            <a href="https://github.com/algorandfoundation/ARCs/issues/3" target="_blank" class="nav-link"><i class="fab fa-github"></i>Algorand ARC3</a>
+                            </li>
+                            <li>
+                            <a href="https://github.com/emg110/ipfs2bytes32" target="_blank" class="nav-link"><i class="fab fa-github"></i>ipfs2bytes32</a>
+                            
+                        
+                            </li>
+                        </ul>
+                        </div>
+                        <div class="account">
+                        <a href="javascript:void(0)" class="icon-wallet">
+                            <div><i class="far fa-wallet"></i></div>
+                            <div>MyAlgo</div>
+                        </a>
+                        </div>
                     </div>
-                </a>
                 </div>
-                <img style="opacity: 0.4;" src="./images/pinata.png" alt="img_post1">
+
+                <div class="content-wrapper arc3ipfs">
+                    <div class="social-link">
+                    <div class="text-block">@emg110</div>
+                    <br>
+                    <div class="icon social"><i class="fab fa-github"></i></div>
+                    <div class="icon social"><i class="fab fa-twitter"></i></div>
+                    <div class="icon social"><i class="fab fa-linkedin"></i></div>
+                    </div>
+                    <div class="content-arc3ipfs">
+                    <div class="tagline">
+                        <div class="tagline-line"></div>
+                        <h5 class="heading-tagline">Algorand ARC3 compliant scenarios</h5>
+                    </div>
+                    <div class="h1-title">
+                        <h1>
+                        Create Algorand NFT using IPFS & complying to ARC3
+                        </h1>
+                    </div>
+                    <div id="to-bottom">
+                        <span>Links</span>
+                        <div class="material-icons">
+                        arrow_downward
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="nav-slider">
+                    <div class="nav-slider-links">
+                    <a href="javascript:void(0)" onclick="fnMove(1)" class="slider-link">ARC3::IPFS</a>
+                    <a href="javascript:void(0)" onclick="fnMove(2)" class="slider-link">Pinata</a>
+                    <a href="javascirpt:void(0)" onclick="fnMove(3)" class="slider-link">SC1</a>
+                    <a href="javascirpt:void(0)" onclick="fnMove(4)" class="slider-link">SC2</a>
+                    </div>
+                    <div class="indicator-line">
+                    <div class="indicator"></div>
+                    </div>
+                </div>
+                <img src="./images/HG.png" class="hg" alt="hg">
+                <img src="./images/MG.png" class="mg" alt="mg">
+                <img src="./images/VG.png" class="vg" alt="vg">
+                <div class="gradient-arc3ipfs"></div>
             </div>
+
+            <div class="content-section">
+
+            <div id="section2">
+                <div class="content-wrapper content">
+                    <div class="grid">
+                        <div class="content-text">
+                        <div class="count">Pinata</div>
+                        <div class="tagline">
+                            <div class="tagline-line"></div>
+                            <h5 class="heading-tagline">Upload NFT file</h5>
+                        </div>
+                        <h2>Upload and Pin with Pinata</h2>
+                        <p>
+                            <a href="https://pinata.cloud" target="_blank" class="nav-link"></i>Pinata Cloud</a>is an IPFS API service for uploading, pinning & management of your IPFS resources.
+                            With Pinata API and Client there will be no need to use other thechnologies which rely on other blockchains and as they are using Pinata to have a better managed access to IPFS without the need to have a local IPFS node installed.                 
+                            
+                        </p>
+                        <a href="" class="link-to arc3ipfs">
+                            <div>Home</div>
+                            <div class="material-icons">
+                            arrow_forward
+                            </div>
+                        </a>
+                        </div>
+                        <img style="opacity: 0.4;" src="./images/pinata.png" alt="img_post1">
+                    </div>
+                </div>
             </div>
-        </div>
 
             <div id="section3">
-            <div class="content-wrapper content">
+                <div class="content-wrapper content">
                 <div class="grid">
                 <img src="./images/HG.png" alt="img_post2">
                 <div class="content-text">
@@ -178,8 +171,9 @@
                 </div>
             </div>
             </div>
+
             <div id="section4">
-            <div class="content-wrapper content">
+                <div class="content-wrapper content">
                 <div class="grid">
                 <div class="content-text">
                     <div class="count">SC2</div>
@@ -202,8 +196,9 @@
                 </div>
             </div>
             </div>
+
             <div class="footer">
-            <div class="content-wrapper content footer">
+                <div class="content-wrapper content footer">
                 <div class="grid footer">
                 <div class="footer-left">
                     <div class="top">
@@ -244,11 +239,12 @@
                         <a href="https://github.com/algorandfoundation/ARCs/issues/3" target="_blank" class="footer-link">ARC3 conversation</a>
                         <a href="https://github.com/algorandfoundation/ARCs/issues/3#issuecomment-913541426" target="_blank" class="footer-link">ARC3 refferenced comment</a>
                     </div>
-                    </div>
                 </div>
+            </div>
                 </div>
             </div>
             </div>
+
         </div>
     </body>
 </html>
