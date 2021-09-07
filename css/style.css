@@ -428,9 +428,14 @@ img {
 
     }
   }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 768px) {
     .site-wrapper{
         min-width:1380px;
 
     }
+    .content-wrapper.arc3ipfs{
+        margin-top:20%;
+    }
   }
+
+  
