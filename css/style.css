@@ -446,6 +446,9 @@ img {
     .content-wrapper.arc3ipfs{
         top:5%;
     }
+    .content-arc3ipfs{
+        max-width: 790px;
+    }
   }
 
   
