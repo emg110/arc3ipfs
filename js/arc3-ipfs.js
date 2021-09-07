@@ -22,7 +22,7 @@ const convertByte32ToIpfsCidV0 = (str) => {
   return bs58.encode(bs58.Buffer.from(`1220${str}`, 'hex'));
 };
 
-const scenario1 = (fileBlob, fileName, assetName) => {
+const scenario1 = (fileBlob, fileName, assetName, assetDesc) => {
 
 
   
@@ -44,7 +44,7 @@ const scenario1 = (fileBlob, fileName, assetName) => {
 
   metadata.properties = properties;
   metadata.name = assetName;
-  metadata.description = "";
+  metadata.description = assetDesc;
   metadata.image = "";
   metadata.image_integrity = "";
 
@@ -58,19 +58,17 @@ const scenario1 = (fileBlob, fileName, assetName) => {
   };
 
   return pinata.pinFileToIPFS(fileBlob, options).then((result) => {
-      //handle results here
       console.log(result);
   }).catch((err) => {
-      //handle error here
       console.log(err);
   });
 };
 
-const scenario2 = (fileBlob, fileName, assetName) => {
+const scenario2 = (fileBlob, fileName, assetName, assetDesc) => {
   let metadata = config.arc3MetadataJson
   metadata.properties = properties;
   metadata.name = assetName;
-  metadata.description = "";
+  metadata.description = assetDesc;
   metadata.image = "";
   metadata.image_integrity = "";
 
