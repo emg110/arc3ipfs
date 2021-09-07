@@ -5,13 +5,9 @@ const pinataSDK = require('@pinata/sdk');
 const pinataApiKey = config.pinataApiKey;
 const pinataSecretApiKey = config.pinataSecretApiKey;
 const pinata = pinataSDK(pinataApiKey, pinataSecretApiKey);
-const readableStreamForFile = fs.createReadStream('./yourfile.png');
 
-pinata.testAuthentication().then((result) => {
-  console.log(result);
-}).catch((err) => {
-  console.log(err);
-});
+
+
 
 const convertIpfsCidV0ToByte32 = (cid) => {
   return `${bs58.decode(cid).slice(2).toString('hex')}`;
@@ -25,7 +21,7 @@ const convertByte32ToIpfsCidV0 = (str) => {
 };
 
 const scenario1 = (fileBlob, fileName, assetName, assetDesc) => {
-  const readableStreamForFile = fs.createReadStream('./images/ASA_IPFS scenarios');
+  
   let fileCat = 'image';
 
 
@@ -115,7 +111,7 @@ const scenario2 = (fileBlob, fileName, assetName, assetDesc) => {
     pinataOptions: pinataOptions
   };
   let data = JSON.stringify(student);
-  fs.writeFileSync('student-2.json', data);
+  fs.writeFileSync(`${fileNameSplit[0]}.json`, data);
   fs.writeFileSync(fileName, fileBlob);
   return fs.mkdir(`./${assetName}`, function (err) {
     if (err) {
@@ -132,6 +128,16 @@ const scenario2 = (fileBlob, fileName, assetName, assetDesc) => {
 
 
 };
+
+pinata.testAuthentication().then((result) => {
+  console.log(result);
+  const sampleNftFile = fs.createReadStream('./images/asa_ipfs.png');
+  scenario1(sampleNftFile, 'asa_ipfs.png', 'Algorand ASA ARC3 IPFS', 'This is a sample NFT created with metadata JSON in ARC3 compliance and using IPFS via Pinata API' )
+
+}).catch((err) => {
+  console.log(err);
+});
+
 module.exports = {
   scenario2,
   scenario1,
