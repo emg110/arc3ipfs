@@ -1,11 +1,3 @@
-const toBottomEl = document.querySelector('#to-bottom');
-
-toBottomEl.addEventListener('click', function () {
-  gsap.to(window, .7, {
-    scrollTo: 4000
-  });
-});
-
 function convertIpfsCidV0ToByte32(cid) {
   return `${bs58.decode(cid).slice(2).toString('hex')}`;
 }

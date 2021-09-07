@@ -27,10 +27,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/@pinata/sdk@1.1.23/lib/pinata-sdk.min.js"></script>
-    <script defer src="./js/config.js"></script>
-    <script defer src="./js/arc3-ipfs.js"></script>
-    <script  src="./js/bs58Bundle.js"></script>
+
+
+
     </head>
     <body>
         <script>
@@ -41,6 +40,15 @@
                 }, 400);
               
             }
+            setTimeout(()=>{
+                const toBottomEl = document.querySelector('#to-bottom');
+
+                toBottomEl.addEventListener('click', function () {
+                    gsap.to(window, .7, {
+                        scrollTo: 4000
+                    });
+                });
+            },200)
         </script>
         <div class="site-wrapper">
             <div class="arc3ipfs-section">
