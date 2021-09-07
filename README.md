@@ -1,6 +1,7 @@
 # arc3-ipfs
 This repository is a simple example of implementation of Algorand ASA Ops using IPFS integration and with emphasis on usage of metadatahash field of ASA.
 
+## This is WORK IN PROGRESS and here will be a live demo link instead of this WIP ALERT when done!
 
 [Algorand ARC0003](https://github.com/algorandfoundation/ARCs/issues/3)
 
