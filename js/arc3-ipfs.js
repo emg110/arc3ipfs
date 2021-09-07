@@ -47,17 +47,17 @@ const scenario1 = (fileBlob, fileName, assetName) => {
   metadata.description = "";
   metadata.image = "";
   metadata.image_integrity = "";
-  
+
   const pinataOptions = {
     cidVersion: 0,
   };
   
-
   const options = {
     pinataMetadata: pinataMetadata,
     pinataOptions: pinataOptions
   };
-  pinata.pinFileToIPFS(readableStreamForFile, options).then((result) => {
+
+  return pinata.pinFileToIPFS(fileBlob, options).then((result) => {
       //handle results here
       console.log(result);
   }).catch((err) => {
@@ -73,31 +73,38 @@ const scenario2 = (fileBlob, fileName, assetName) => {
   metadata.description = "";
   metadata.image = "";
   metadata.image_integrity = "";
-  let fileNameSplit = fileName.split('.')
+
+  let fileNameSplit = fileName.split('.');
   
   let properties = {
     "file_name": fileNameSplit[0],
     "file_extension": fileNameSplit[1],
     "file_size": fileBlob.size,
     "file_category": "image"
-  }
+  };
+
   const pinataMetadata = {
     name: assetName,
     keyvalues: properties
   };
+
   const body = metadata;
+
   const pinataOptions = {
     cidVersion: 0,
   };
+
   const options = {
       pinataMetadata: pinataMetadata,
       pinataOptions: pinataOptions
   };
-  pinata.pinJSONToIPFS(body, options).then((result) => {
+
+  return pinata.pinJSONToIPFS(body, options).then((result) => {
       console.log(result);
   }).catch((err) => {
       console.log(err);
   });
+
 };
 module.exports = {
   scenario2,
