@@ -43,7 +43,11 @@ const scenario1 = (fileBlob, fileName, assetName) => {
   let metadata = config.arc3MetadataJson
 
   metadata.properties = properties;
-  //pinataOptions are optional
+  metadata.name = assetName;
+  metadata.description = "";
+  metadata.image = "";
+  metadata.image_integrity = "";
+  
   const pinataOptions = {
     cidVersion: 0,
   };
@@ -63,16 +67,37 @@ const scenario1 = (fileBlob, fileName, assetName) => {
 };
 
 const scenario2 = (fileBlob, fileName, assetName) => {
-  const url = config.pinataJSONUrl;
-  const pinataApiKey = config.pinataApiKey;
-  const pinataSecretApiKey = config.pinataSecretApiKey;
   let metadata = config.arc3MetadataJson
   metadata.properties = properties;
-  metadata.name = properties;
-  metadata.description = properties;
-  metadata.image = properties;
-  metadata.image_integrity = properties;
+  metadata.name = assetName;
+  metadata.description = "";
+  metadata.image = "";
+  metadata.image_integrity = "";
+  let fileNameSplit = fileName.split('.')
   
+  let properties = {
+    "file_name": fileNameSplit[0],
+    "file_extension": fileNameSplit[1],
+    "file_size": fileBlob.size,
+    "file_category": "image"
+  }
+  const pinataMetadata = {
+    name: assetName,
+    keyvalues: properties
+  };
+  const body = metadata;
+  const pinataOptions = {
+    cidVersion: 0,
+  };
+  const options = {
+      pinataMetadata: pinataMetadata,
+      pinataOptions: pinataOptions
+  };
+  pinata.pinJSONToIPFS(body, options).then((result) => {
+      console.log(result);
+  }).catch((err) => {
+      console.log(err);
+  });
 };
 module.exports = {
   scenario2,
