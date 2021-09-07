@@ -365,7 +365,17 @@ img {
 .count-right {
     position: absolute;
     right: -100px;
-    bottom: 520px;
+    /* bottom: 520px; */
+    z-index: -1;
+    opacity: 0.1;
+    font-size: 200px;
+    line-height: 100%;
+    font-weight: 700;
+}
+.count-left {
+    position: absolute;
+    right: -100px;
+    /* bottom: 520px; */
     z-index: -1;
     opacity: 0.1;
     font-size: 200px;
