@@ -447,7 +447,10 @@ img {
         top:5%;
     }
     .content-arc3ipfs{
-        max-width: 790px;
+        max-width: 1000px;
+    }
+    .nav-slider{
+        top:10%;
     }
   }
 
