@@ -1,13 +1,22 @@
 const fs = require('fs');
+const path = require('path');
 const bs58 = require("bs58");
+const { create, CID } = require('ipfs-http-client')
 const config = require("./config")
 const pinataSDK = require('@pinata/sdk');
 const pinataApiKey = config.pinataApiKey;
 const pinataSecretApiKey = config.pinataSecretApiKey;
 const pinata = pinataSDK(pinataApiKey, pinataSecretApiKey);
+const nftWorkspacePath = './workspace'
+
+const ipfs = create('http://localhost:5002')
 
 
-
+/* ipfs.add('Hello world!').then(({cid})=>{
+ console.log(cid)
+}).catch((err)=>{
+  console.log(err)
+}) */
 
 const convertIpfsCidV0ToByte32 = (cid) => {
   return `${bs58.decode(cid).slice(2).toString('hex')}`;
@@ -20,13 +29,13 @@ const convertByte32ToIpfsCidV0 = (str) => {
   return bs58.encode(bs58.Buffer.from(`1220${str}`, 'hex'));
 };
 
-const scenario1 = (fileBlob, fileName, assetName, assetDesc) => {
-  
+const scenario1 = (nftFile, nftFileName, assetName, assetDesc) => {
+  let nftFileStats = fs.statSync(`${nftWorkspacePath}/${nftFileName}`)
   let fileCat = 'image';
 
 
-  let fileNameSplit = fileName.split('.')
-  let ext = fileNameSplit[1];
+  let nftFileNameSplit = nftFileName.split('.')
+  let ext = nftFileNameSplit[1];
   if (ext === 'txt') {
     fileCat = 'text'
   } else if (ext === 'mp4') {
@@ -34,10 +43,10 @@ const scenario1 = (fileBlob, fileName, assetName, assetDesc) => {
   } else if (ext === 'mp3' || ext === 'wav') {
     fileCat = 'audio'
   }
-  let properties = {
-    "file_name": fileNameSplit[0],
+  const properties = {
+    "file_name": nftFileNameSplit[0],
     "file_extension": ext,
-    "file_size": fileBlob.size,
+    "file_size": nftFileStats.size,
     "file_category": fileCat
   }
 
@@ -56,16 +65,18 @@ const scenario1 = (fileBlob, fileName, assetName, assetDesc) => {
     pinataMetadata: pinataMetadata,
     pinataOptions: pinataOptions
   };
-  return pinata.pinFileToIPFS(fileBlob, options).then((resultFile) => {
+  return pinata.pinFileToIPFS(nftFile, options).then((resultFile) => {
     console.log(resultFile);
-    let metadata = config.arc3MetadataJson
+    let metadata = config.arc3MetadataJSON
 
     metadata.properties = properties;
     metadata.name = assetName;
     metadata.description = assetDesc;
     metadata.image = 'ipfs://' + resultFile.IpfsHash;
     metadata.image_integrity = resultFile.IpfsHash;
+    console.log(CID.parse(resultFile.IpfsHash))
     return pinata.pinJSONToIPFS(metadata, options).then((resultMeta) => {
+
       console.log(resultMeta);
 
     }).catch((err) => {
@@ -78,23 +89,35 @@ const scenario1 = (fileBlob, fileName, assetName, assetDesc) => {
 
 };
 
-const scenario2 = (fileBlob, fileName, assetName, assetDesc) => {
-  let metadata = config.arc3MetadataJson
-  metadata.properties = properties;
-  metadata.name = assetName;
-  metadata.description = assetDesc;
-  metadata.image = "";
-  metadata.image_integrity = "";
+const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
+  let nftFileStats = fs.statSync(`${nftFileName}`)
+  let fileCat = 'image';
 
-  let fileNameSplit = fileName.split('.');
+
+  let nftFileNameSplit = nftFileName.split('.')
+  let ext = nftFileNameSplit[1];
+  if (ext === 'txt') {
+    fileCat = 'text'
+  } else if (ext === 'mp4') {
+    fileCat = 'video'
+  } else if (ext === 'mp3' || ext === 'wav') {
+    fileCat = 'audio'
+  }
+
 
   let properties = {
-    "file_name": fileNameSplit[0],
-    "file_extension": fileNameSplit[1],
-    "file_size": fileBlob.size,
-    "file_category": "image"
+    "file_name": nftFileNameSplit[0],
+    "file_extension": nftFileNameSplit[1],
+    "file_size": nftFileStats.size,
+    "file_category": fileCat
   };
+  let metadata = {
+    ...config.arc3MetadataJSON,
+    properties: properties,
+    name: assetName,
+    description: assetDesc,
 
+  }
   const pinataMetadata = {
     name: assetName,
     keyvalues: properties
@@ -102,41 +125,96 @@ const scenario2 = (fileBlob, fileName, assetName, assetDesc) => {
 
 
 
-  const pinataOptions = {
+  const pinataNftFileOptions = {
+    cidVersion: 0,
+    wrapWithDirectory: true
+  };
+  const pinataJsonOptions = {
     cidVersion: 0,
   };
 
-  const options = {
+  const nftFileOptions = {
     pinataMetadata: pinataMetadata,
-    pinataOptions: pinataOptions
+    pinataOptions: pinataNftFileOptions
   };
-  let data = JSON.stringify(student);
-  fs.writeFileSync(`${fileNameSplit[0]}.json`, data);
-  fs.writeFileSync(fileName, fileBlob);
-  return fs.mkdir(`./${assetName}`, function (err) {
-    if (err) {
-      return console.log(err)
-    } else {
-      return pinata.pinFromFS(`./${assetName}`, options).then((result) => {
-        return console.log(result);
-      }).catch((err) => {
-        return console.log(err);
-      });
-    }
-  })
 
+  const nftJsonOptions = {
+    pinataMetadata: pinataMetadata,
+    pinataOptions: pinataJsonOptions
+  };
 
-
-};
-
-pinata.testAuthentication().then((result) => {
+  if (fs.existsSync(`${assetName}`)) {
+    fs.rmdirSync(`${assetName}`, { recursive: true });
+  }
+  let result = await pinata.pinFileToIPFS(nftFile, nftJsonOptions)
   console.log(result);
-  const sampleNftFile = fs.createReadStream('./images/asa_ipfs.png');
-  scenario1(sampleNftFile, 'asa_ipfs.png', 'Algorand ASA ARC3 IPFS', 'This is a sample NFT created with metadata JSON in ARC3 compliance and using IPFS via Pinata API' )
 
-}).catch((err) => {
-  console.log(err);
-});
+  metadata.image = '/ipfs/' + result.IpfsHash;
+  metadata.image_integrity = result.IpfsHash;
+ 
+  console.log(metadata)
+  let resultMeta = await pinata.pinJSONToIPFS(metadata, nftJsonOptions)
+  console.log(resultMeta)
+
+  const folderCid = await ipfs.object.new()
+  console.log(folderCid)
+  const finResJson = await ipfs.object.patch.addLink(folderCid, {
+    name: `${nftFileNameSplit[0]}.json`,
+    size: resultMeta.size,
+    cid: resultMeta.IpfsHash,
+  })
+  console.log(finResJson)
+  const finResNft = await ipfs.object.patch.addLink(finResJson, {
+    name: nftFileName,
+    size: result.size,
+    cid: result.IpfsHash,
+  })
+ 
+  console.log(finResNft)
+  let finPin = await ipfs.pin.add(finResNft);
+  console.log(finPin);
+  const finPinataPin = await pinata.pinByHash(finPin.toString())
+  console.log(finPinataPin)
+}
+
+const testScenario1 = () => {
+  pinata.testAuthentication().then((result) => {
+    console.log(result);
+    let nftFileName = 'asa_ipfs.png'
+    const sampleNftFile = fs.createReadStream(`${nftWorkspacePath}/${nftFileName}`);
+    scenario1(sampleNftFile, nftFileName, 'Algorand ASA ARC3 IPFS', 'This is a sample NFT created with metadata JSON in ARC3 compliance and using IPFS via Pinata API')
+
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
+const testScenario2 = () => {
+  pinata.testAuthentication().then((result) => {
+    console.log(result);
+    let nftFileName = 'asa_ipfs.png'
+    const sampleNftFile = fs.createReadStream(`${nftFileName}`);
+    scenario2(sampleNftFile, nftFileName, 'Algorand ASA ARC3 IPFS', 'This is a sample NFT created with metadata JSON in ARC3 compliance and using IPFS via Pinata API')
+
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+const ipfsAddPinata = () => {
+  return ipfs.pin.remote.service.add('pinata', {
+    endpoint: 'https://api.pinata.cloud',
+    key: pinataApiKey
+  }).then((resAdd) => {
+    console.log(resAdd)
+  }).catch((err) => {
+    console.log(err)
+  })
+}
+
+
+
+testScenario1()
+testScenario2();
 
 module.exports = {
   scenario2,

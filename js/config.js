@@ -1,12 +1,12 @@
 module.exports = {
-    pinataApiKey: "cc5751d62a904d462d35",
-    pinataSecretApiKey: "c34be406e8dbce0d1b2ff5260503395a3297ac3b2e76ecead0b851d2fc953f1d",
+    pinataApiKey: "f320b5a7f3302c905161",
+    pinataSecretApiKey: "1bc1510da6933d0afb5b790b963303659548e1bcc1c3ee80cecc7bd98ad4e2c5",
     pinataFileUrl: "https://api.pinata.cloud/pinning/pinFileToIPFS",
     pinataJSONUrl: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
     arc3MetadataJSON: {
         "name": "",
         "description": "",
-        "image": "ipfs://",
+        "image": "/ipfs/",
         "image_integrity": "sha256-",
         "properties": {
             "file_name": "",
