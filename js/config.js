@@ -3,6 +3,7 @@ module.exports = {
     pinataSecretApiKey: "1bc1510da6933d0afb5b790b963303659548e1bcc1c3ee80cecc7bd98ad4e2c5",
     pinataFileUrl: "https://api.pinata.cloud/pinning/pinFileToIPFS",
     pinataJSONUrl: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+    ipfsNode: "http://localhost:5002",
     arc3MetadataJSON: {
         "name": "",
         "description": "",

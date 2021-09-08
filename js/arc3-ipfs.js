@@ -9,14 +9,8 @@ const pinataSecretApiKey = config.pinataSecretApiKey;
 const pinata = pinataSDK(pinataApiKey, pinataSecretApiKey);
 const nftWorkspacePath = './workspace'
 
-const ipfs = create('http://localhost:5002')
+const ipfs = create(config.ipfsNode)
 
-
-/* ipfs.add('Hello world!').then(({cid})=>{
- console.log(cid)
-}).catch((err)=>{
-  console.log(err)
-}) */
 
 const convertIpfsCidV0ToByte32 = (cid) => {
   return `${bs58.decode(cid).slice(2).toString('hex')}`;
