@@ -253,6 +253,9 @@ img {
     margin-top: 16px;
     transform: rotate(90deg);
 }
+.icon-link:hover {  
+    color: var(--Accent-color)
+}
 .arc3ipfs-section {
     height: 1000px;
 }
