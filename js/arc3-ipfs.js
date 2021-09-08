@@ -117,37 +117,28 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
     keyvalues: properties
   };
 
-
-
-  const pinataNftFileOptions = {
-    cidVersion: 0,
-    wrapWithDirectory: true
-  };
-  const pinataJsonOptions = {
+  const pinataOptions = {
     cidVersion: 0,
   };
 
-  const nftFileOptions = {
+  const options = {
     pinataMetadata: pinataMetadata,
-    pinataOptions: pinataNftFileOptions
+    pinataOptions: pinataOptions
   };
 
-  const nftJsonOptions = {
-    pinataMetadata: pinataMetadata,
-    pinataOptions: pinataJsonOptions
-  };
+ 
 
   if (fs.existsSync(`${assetName}`)) {
     fs.rmdirSync(`${assetName}`, { recursive: true });
   }
-  let result = await pinata.pinFileToIPFS(nftFile, nftJsonOptions)
+  let result = await pinata.pinFileToIPFS(nftFile, options)
   console.log(result);
 
   metadata.image = '/ipfs/' + result.IpfsHash;
   metadata.image_integrity = result.IpfsHash;
  
   console.log(metadata)
-  let resultMeta = await pinata.pinJSONToIPFS(metadata, nftJsonOptions)
+  let resultMeta = await pinata.pinJSONToIPFS(metadata, options)
   console.log(resultMeta)
 
   const folderCid = await ipfs.object.new()
@@ -194,18 +185,6 @@ const testScenario2 = () => {
     console.log(err);
   });
 }
-const ipfsAddPinata = () => {
-  return ipfs.pin.remote.service.add('pinata', {
-    endpoint: 'https://api.pinata.cloud',
-    key: pinataApiKey
-  }).then((resAdd) => {
-    console.log(resAdd)
-  }).catch((err) => {
-    console.log(err)
-  })
-}
-
-
 
 testScenario1()
 testScenario2();
