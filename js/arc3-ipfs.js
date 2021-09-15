@@ -129,7 +129,7 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
   let result = await pinata.pinFileToIPFS(nftFile, options)
   console.log('The NFT original digital asset file: ',result);
 
-  metadata.image = '/ipfs/' + result.IpfsHash;
+  metadata.image = 'ipfs://' + result.IpfsHash;
   metadata.image_integrity = result.IpfsHash;
  
   console.log('The NFT original prepared metadata: ',metadata)
