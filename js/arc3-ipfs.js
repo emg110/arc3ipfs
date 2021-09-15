@@ -68,7 +68,7 @@ const scenario1 = (nftFile, nftFileName, assetName, assetDesc) => {
     metadata.description = assetDesc;
     metadata.image = 'ipfs://' + resultFile.IpfsHash;
     metadata.image_integrity = resultFile.IpfsHash;
-    console.log('The NFT original digital asset file CID: ', CID.parse(resultFile.IpfsHash))
+  
     return pinata.pinJSONToIPFS(metadata, options).then((resultMeta) => {
 
       console.log('The NFT metadata JSON file: ',resultMeta);
@@ -162,7 +162,7 @@ const testScenario1 = () => {
     console.log(result);
     let nftFileName = 'asa_ipfs.png'
     const sampleNftFile = fs.createReadStream(`${nftWorkspacePath}/${nftFileName}`);
-    scenario1(sampleNftFile, nftFileName, 'Algorand ASA ARC3 IPFS', 'This is a sample NFT created with metadata JSON in ARC3 compliance and using IPFS via Pinata API')
+    scenario1(sampleNftFile, nftFileName, 'Algorand ASA ARC3 IPFS SC1', 'This is a Scenario1 NFT created with metadata JSON in ARC3 compliance and using IPFS via Pinata API')
 
   }).catch((err) => {
     console.log(err);
@@ -174,19 +174,23 @@ const testScenario2 = () => {
     console.log(result);
     let nftFileName = 'asa_ipfs.png'
     const sampleNftFile = fs.createReadStream(`${nftWorkspacePath}/${nftFileName}`);
-    scenario2(sampleNftFile, nftFileName, 'Algorand ASA ARC3 IPFS', 'This is a sample NFT created with metadata JSON in ARC3 compliance and using IPFS via Pinata API')
+    scenario2(sampleNftFile, nftFileName, 'Algorand ASA ARC3 IPFS SC2', 'This is a Scenario2 NFT created with metadata JSON in ARC3 compliance and using IPFS via Pinata API')
 
   }).catch((err) => {
     console.log(err);
   });
 }
 
+
 //testScenario1()
-testScenario2();
+//testScenario2();
+testScenario3();
 
 module.exports = {
   scenario2,
   scenario1,
+  testScenario2,
+  testScenario1,
   convertByte32ToIpfsCidV0,
   convertIpfsCidV0ToByte32,
 }
