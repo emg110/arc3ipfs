@@ -190,8 +190,59 @@
                         <div class="tagline-line"></div>
                         <h5 class="heading-tagline">Scenario 2</h5>
                         </div>
-                        <h2>File & Metadata both ina folder</h2>
+                        <h2>File & Metadata both in a folder</h2>
                         <p>
+                            <figure>
+                                <figcaption>Your code title</figcaption>
+                                <pre>
+                                    <code contenteditable spellcheck="false">
+                                        let nftFileStats = fs.statSync(`${nftFileName}`)
+                                        let fileCat = 'image';
+                                        let nftFileNameSplit = nftFileName.split('.')
+                                        let ext = nftFileNameSplit[1];
+                                        let properties = {
+                                            "file_name": nftFileNameSplit[0],
+                                            "file_extension": nftFileNameSplit[1],
+                                            "file_size": nftFileStats.size,
+                                            "file_category": fileCat
+                                        };
+                                        let metadata = {
+                                            ...config.arc3MetadataJSON,
+                                            properties: properties,
+                                            name: assetName,
+                                            description: assetDesc,
+                                        }
+                                        const pinataMetadata = {
+                                            name: assetName,
+                                            keyvalues: properties
+                                        };
+                                        const pinataOptions = {
+                                            cidVersion: 0,
+                                        };
+                                        const options = {
+                                            pinataMetadata: pinataMetadata,
+                                            pinataOptions: pinataOptions
+                                        };
+                                        let result = await pinata.pinFileToIPFS(nftFile, options);
+                                        metadata.image = '/ipfs/' + result.IpfsHash;
+                                        metadata.image_integrity = result.IpfsHash;
+                                        let resultMeta = await pinata.pinJSONToIPFS(metadata, options);                                      
+                                        const folderCid = await ipfs.object.new();                                
+                                        const finResJson = await ipfs.object.patch.addLink(folderCid, {
+                                            name: `${nftFileNameSplit[0]}.json`,
+                                            size: resultMeta.size,
+                                            cid: resultMeta.IpfsHash,
+                                        });                                        
+                                        const finResNft = await ipfs.object.patch.addLink(finResJson, {
+                                            name: nftFileName,
+                                            size: result.size,
+                                            cid: result.IpfsHash,
+                                        }); 
+                                        let finPin = await ipfs.pin.add(finResNft);                                       
+                                        const finPinataPin = await pinata.pinByHash(finPin.toString());                                        
+                                    </code>
+                                </pre>
+                            </figure>
                             File + Metadata --> Folder --> IPFS --> ASA metadatahash field
                         </p>
                         <a href="" class="link-to arc3ipfs">

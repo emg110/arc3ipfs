@@ -7,7 +7,7 @@ const pinataSDK = require('@pinata/sdk');
 const pinataApiKey = config.pinataApiKey;
 const pinataSecretApiKey = config.pinataSecretApiKey;
 const pinata = pinataSDK(pinataApiKey, pinataSecretApiKey);
-const nftWorkspacePath = './workspace'
+const nftWorkspacePath = __dirname+'/workspace'
 
 const ipfs = create(config.ipfsNode)
 
@@ -84,10 +84,8 @@ const scenario1 = (nftFile, nftFileName, assetName, assetDesc) => {
 };
 
 const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
-  let nftFileStats = fs.statSync(`${nftFileName}`)
+  let nftFileStats = fs.statSync(`${nftWorkspacePath}/${nftFileName}`)
   let fileCat = 'image';
-
-
   let nftFileNameSplit = nftFileName.split('.')
   let ext = nftFileNameSplit[1];
   if (ext === 'txt') {
@@ -128,10 +126,7 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
 
  
 
-  if (fs.existsSync(`${assetName}`)) {
-    fs.rmdirSync(`${assetName}`, { recursive: true });
-  }
-  let result = await pinata.pinFileToIPFS(nftFile, options)
+ let result = await pinata.pinFileToIPFS(nftFile, options)
   console.log(result);
 
   metadata.image = '/ipfs/' + result.IpfsHash;
@@ -178,7 +173,7 @@ const testScenario2 = () => {
   pinata.testAuthentication().then((result) => {
     console.log(result);
     let nftFileName = 'asa_ipfs.png'
-    const sampleNftFile = fs.createReadStream(`${nftFileName}`);
+    const sampleNftFile = fs.createReadStream(`${nftWorkspacePath}/${nftFileName}`);
     scenario2(sampleNftFile, nftFileName, 'Algorand ASA ARC3 IPFS', 'This is a sample NFT created with metadata JSON in ARC3 compliance and using IPFS via Pinata API')
 
   }).catch((err) => {

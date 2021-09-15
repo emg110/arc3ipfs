@@ -5,6 +5,7 @@
     "main": "src/index.js",
     "scripts": {
       "start": "parcel index.html",      
+      "scenarios": "node ./js/arc3-ipfs.js",      
       "browserify": "browserify node_modules/bs58/index.js -o ./js/bs58Bundle.js",      
       "test": "echo \"Error: no test specified\" && exit 1"
     },
