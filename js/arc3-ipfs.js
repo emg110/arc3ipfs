@@ -60,7 +60,7 @@ const scenario1 = (nftFile, nftFileName, assetName, assetDesc) => {
     pinataOptions: pinataOptions
   };
   return pinata.pinFileToIPFS(nftFile, options).then((resultFile) => {
-    console.log(resultFile);
+    console.log('The NFT original digital asset file: ', resultFile);
     let metadata = config.arc3MetadataJSON
 
     metadata.properties = properties;
@@ -68,10 +68,10 @@ const scenario1 = (nftFile, nftFileName, assetName, assetDesc) => {
     metadata.description = assetDesc;
     metadata.image = 'ipfs://' + resultFile.IpfsHash;
     metadata.image_integrity = resultFile.IpfsHash;
-    console.log(CID.parse(resultFile.IpfsHash))
+    console.log('The NFT original digital asset file CID: ', CID.parse(resultFile.IpfsHash))
     return pinata.pinJSONToIPFS(metadata, options).then((resultMeta) => {
 
-      console.log(resultMeta);
+      console.log('The NFT metadata JSON file: ',resultMeta);
 
     }).catch((err) => {
       return console.log(err);
@@ -126,35 +126,35 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
 
  
 
- let result = await pinata.pinFileToIPFS(nftFile, options)
-  console.log(result);
+  let result = await pinata.pinFileToIPFS(nftFile, options)
+  console.log('The NFT original digital asset file: ',result);
 
   metadata.image = '/ipfs/' + result.IpfsHash;
   metadata.image_integrity = result.IpfsHash;
  
-  console.log(metadata)
+  console.log('The NFT original prepared metadata: ',metadata)
   let resultMeta = await pinata.pinJSONToIPFS(metadata, options)
-  console.log(resultMeta)
+  console.log('The NFT metadata pinned to Pinata: ',resultMeta)
 
   const folderCid = await ipfs.object.new()
-  console.log(folderCid)
+  console.log('The NFT folder CID: ',folderCid)
   const finResJson = await ipfs.object.patch.addLink(folderCid, {
     name: `${nftFileNameSplit[0]}.json`,
     size: resultMeta.size,
     cid: resultMeta.IpfsHash,
   })
-  console.log(finResJson)
+  console.log('The NFT folder CID after added metadata JSON link: ', finResJson)
   const finResNft = await ipfs.object.patch.addLink(finResJson, {
     name: nftFileName,
     size: result.size,
     cid: result.IpfsHash,
   })
  
-  console.log(finResNft)
+  console.log('The NFT folder CID after added original NFT file link: ',finResNft)
   let finPin = await ipfs.pin.add(finResNft);
-  console.log(finPin);
+  console.log('The NFT folder CID pinned locally on IPFS: ',finPin);
   const finPinataPin = await pinata.pinByHash(finPin.toString())
-  console.log(finPinataPin)
+  console.log('The NFT folder CID pinned to Pinata: ', finPinataPin)
 }
 
 const testScenario1 = () => {
@@ -181,7 +181,7 @@ const testScenario2 = () => {
   });
 }
 
-testScenario1()
+//testScenario1()
 testScenario2();
 
 module.exports = {
