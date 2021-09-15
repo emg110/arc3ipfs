@@ -136,7 +136,7 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
   let resultMeta = await pinata.pinJSONToIPFS(metadata, options)
   console.log('The NFT metadata pinned to Pinata: ',resultMeta)
 
-  const folderCid = await ipfs.object.new()
+  const folderCid = await ipfs.object.new({ template: 'unixfs-dir' })
   console.log('The NFT folder CID: ',folderCid)
   const finResJson = await ipfs.object.patch.addLink(folderCid, {
     name: `${nftFileNameSplit[0]}.json`,
@@ -183,8 +183,8 @@ const testScenario2 = () => {
 
 
 //testScenario1()
-//testScenario2();
-testScenario3();
+testScenario2();
+
 
 module.exports = {
   scenario2,
