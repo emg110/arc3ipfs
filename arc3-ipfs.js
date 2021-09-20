@@ -93,6 +93,7 @@ const scenario1 = async (nftFile, nftFileName, assetName, assetDesc) => {
   metadata.image = `ipfs://${resultFile.IpfsHash}`;
   metadata.image_integrity = `sha256-${resultFile.IpfsHash}`;
   metadata.image_mimetype = `${fileCat}/${fileExt}`;
+  console.log('SC1: The NFT prepared metadata: ', metadata);
 
   const resultMeta = await pinata.pinJSONToIPFS(metadata, options);
   console.log('SC1: The NFT metadata JSON file pinned to IPFS via Pinata: ', resultMeta);
@@ -171,6 +172,7 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
 
   metadata.image = `ipfs://${resultFile.IpfsHash}`;
   metadata.image_integrity = `sha256-${resultFile.IpfsHash}`;
+  metadata.image_mimetype = `${fileCat}/${fileExt}`;
   console.log('SC2: The NFT prepared metadata: ', metadata);
 
   let resultMeta = await pinata.pinJSONToIPFS(metadata, options);
