@@ -2,12 +2,12 @@
     "name": "arc3-ipfs",
     "version": "1.0.0",
     "description": "",
-    "main": "src/index.js",
+    "main": "src/arc3-ipfs.js",
     "scripts": {
-      "start": "parcel index.html",      
+      "start": "node ./arc3-ipfs.js",   
+      "start-web": "parcel index.html",     
       "ipfs-install": "npm install -g ipfs",      
-      "ipfs-run": "jsipfs daemon",      
-      "scenarios": "node ./js/arc3-ipfs.js",    
+      "ipfs-run": "jsipfs daemon",  
       "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
@@ -20,7 +20,8 @@
       "metro4": "latest",
       "@pinata/sdk":"latest",
       "bs58":"latest",
-      "ipfs-http-client":"latest"
+      "ipfs-http-client":"latest",
+      "ipfs-core": "latest"
     },
     "devDependencies": {
       "nodemon": "latest",

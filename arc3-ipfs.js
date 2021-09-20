@@ -1,15 +1,20 @@
 const fs = require('fs');
 const path = require('path');
 const bs58 = require("bs58");
-const { create, CID } = require('ipfs-http-client')
+
 const config = require("./config")
 const pinataSDK = require('@pinata/sdk');
 const pinataApiKey = config.pinataApiKey;
 const pinataSecretApiKey = config.pinataSecretApiKey;
 const pinata = pinataSDK(pinataApiKey, pinataSecretApiKey);
-const nftWorkspacePath = __dirname+'/workspace'
+const nftWorkspacePath = __dirname+'/workspace';
+/* Use these two if you have a running IPFS node and want to connect to it for IPFS operations. */
 
-const ipfs = create(config.ipfsNode)
+//const { create, CID } = require('ipfs-http-client')
+//const ipfs = create(config.ipfsNode)
+
+/* Use this instance for temporary lightweight IPFS instance inside your Node application process */
+const IPFS = require('ipfs-core');
 
 
 const convertIpfsCidV0ToByte32 = (cid) => {
@@ -84,6 +89,7 @@ const scenario1 = (nftFile, nftFileName, assetName, assetDesc) => {
 };
 
 const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
+  const ipfs = await IPFS.create();
   let nftFileStats = fs.statSync(`${nftWorkspacePath}/${nftFileName}`)
   let fileCat = 'image';
   let nftFileNameSplit = nftFileName.split('.')
@@ -183,7 +189,7 @@ const testScenario2 = () => {
 
 
 //testScenario1()
-testScenario2();
+//testScenario2();
 
 
 module.exports = {
