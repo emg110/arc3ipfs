@@ -1,12 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 const bs58 = require("bs58");
-
 const config = require("./config")
-const pinataSDK = require('@pinata/sdk');
 const pinataApiKey = config.pinataApiKey;
-const pinataSecretApiKey = config.pinataSecretApiKey;
-const pinata = pinataSDK(pinataApiKey, pinataSecretApiKey);
+const pinataApiSecret = config.pinataApiSecret;
+const pinataSDK = require('@pinata/sdk');
+
+const pinata = pinataSDK(pinataApiKey, pinataApiSecret);
 const nftWorkspacePath = __dirname+'/workspace';
 /* Use these two if you have a running IPFS node and want to connect to it for IPFS operations. */
 
@@ -28,19 +28,38 @@ const convertByte32ToIpfsCidV0 = (str) => {
   return bs58.encode(bs58.Buffer.from(`1220${str}`, 'hex'));
 };
 
-const scenario1 = (nftFile, nftFileName, assetName, assetDesc) => {
+const scenario1 = async(nftFile, nftFileName, assetName, assetDesc) => {
   let nftFileStats = fs.statSync(`${nftWorkspacePath}/${nftFileName}`)
   let fileCat = 'image';
 
 
   let nftFileNameSplit = nftFileName.split('.')
   let ext = nftFileNameSplit[1];
-  if (ext === 'txt') {
-    fileCat = 'text'
-  } else if (ext === 'mp4') {
-    fileCat = 'video'
-  } else if (ext === 'mp3' || ext === 'wav') {
-    fileCat = 'audio'
+  switch(ext) {
+    case 'txt':
+      fileCat = 'text'
+      break;
+    case 'pdf':
+      fileCat = 'pdf'
+      break;
+    case 'mp4':
+      fileCat = 'video'
+      break;
+    case 'wav':
+      fileCat = 'audio'
+      break;
+    case 'zip':
+    case 'rar':
+    case '7z':
+      fileCat = 'archive'
+      break;
+    case 'png':
+    case 'jpg':
+    case 'svg':
+      fileCat = 'image'
+      break;
+    default:
+      fileCat = 'file'
   }
   const properties = {
     "file_name": nftFileNameSplit[0],
@@ -64,26 +83,18 @@ const scenario1 = (nftFile, nftFileName, assetName, assetDesc) => {
     pinataMetadata: pinataMetadata,
     pinataOptions: pinataOptions
   };
-  return pinata.pinFileToIPFS(nftFile, options).then((resultFile) => {
-    console.log('The NFT original digital asset file: ', resultFile);
-    let metadata = config.arc3MetadataJSON
+  const resultFile = await pinata.pinFileToIPFS(nftFile, options)
+  console.log('The NFT original digital asset file: ', resultFile);
+  let metadata = config.arc3MetadataJSON
 
-    metadata.properties = properties;
-    metadata.name = assetName;
-    metadata.description = assetDesc;
-    metadata.image = 'ipfs://' + resultFile.IpfsHash;
-    metadata.image_integrity = resultFile.IpfsHash;
-  
-    return pinata.pinJSONToIPFS(metadata, options).then((resultMeta) => {
-
-      console.log('The NFT metadata JSON file: ',resultMeta);
-
-    }).catch((err) => {
-      return console.log(err);
-    });
-  }).catch((err) => {
-    return console.log(err);
-  });
+  metadata.properties = properties;
+  metadata.name = assetName;
+  metadata.description = assetDesc;
+  metadata.image = 'ipfs://' + resultFile.IpfsHash;
+  metadata.image_integrity = resultFile.IpfsHash;
+  const resultMeta = await pinata.pinJSONToIPFS(metadata, options)
+  console.log('The NFT metadata JSON file: ',resultMeta);
+ 
 
 
 };
@@ -98,13 +109,33 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
   let fileCat = 'image';
   let nftFileNameSplit = nftFileName.split('.')
   let ext = nftFileNameSplit[1];
-  if (ext === 'txt') {
-    fileCat = 'text'
-  } else if (ext === 'mp4') {
-    fileCat = 'video'
-  } else if (ext === 'mp3' || ext === 'wav') {
-    fileCat = 'audio'
+  switch(ext) {
+    case 'txt':
+      fileCat = 'text'
+      break;
+    case 'pdf':
+      fileCat = 'pdf'
+      break;
+    case 'mp4':
+      fileCat = 'video'
+      break;
+    case 'wav':
+      fileCat = 'audio'
+      break;
+    case 'zip':
+    case 'rar':
+    case '7z':
+      fileCat = 'archive'
+      break;
+    case 'png':
+    case 'jpg':
+    case 'svg':
+      fileCat = 'image'
+      break;
+    default:
+      fileCat = 'file'
   }
+  
 
 
   let properties = {
