@@ -1,5 +1,6 @@
-# arc3-ipfs
-This repository is a simple implementation of Algorand ASA Ops using IPFS integration with emphasis on usage of metadatahash field of ASA, with compliance to ARC3 convention.
+![ASA _--_ IPFS](./images/arc3ipfs.png)
+# NFT ARC3::IPFS
+This repository is a simple implementation of Algorand ASA based NFT generation scenarios, using IPFS integration with emphasis on usage of metadatahash & URL fields of ASA, in compliance to ARC3 convention.
 
 ## This is WORK IN PROGRESS.
 
