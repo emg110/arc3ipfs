@@ -7,7 +7,7 @@ const pinataApiSecret = config.pinataApiSecret;
 const pinataSDK = require('@pinata/sdk');
 
 const pinata = pinataSDK(pinataApiKey, pinataApiSecret);
-const nftWorkspacePath = __dirname+'/workspace';
+const nftWorkspacePath = __dirname + '/workspace';
 /* Use these two if you have a running IPFS node and want to connect to it for IPFS operations. */
 
 //const { create, CID } = require('ipfs-http-client')
@@ -28,16 +28,16 @@ const convertByte32ToIpfsCidV0 = (str) => {
   return bs58.encode(bs58.Buffer.from(`1220${str}`, 'hex'));
 };
 
-const scenario1 = async(nftFile, nftFileName, assetName, assetDesc) => {
+const scenario1 = async (nftFile, nftFileName, assetName, assetDesc) => {
   let nftFileStats = fs.statSync(`${nftWorkspacePath}/${nftFileName}`)
   let fileCat = 'image';
 
-
   let nftFileNameSplit = nftFileName.split('.')
-  let ext = nftFileNameSplit[1];
-  switch(ext) {
+  let fileExt = nftFileNameSplit[1];
+
+  switch (fileExt) {
     case 'txt':
-      fileCat = 'text'
+      fileCat = 'tfileExt'
       break;
     case 'pdf':
       fileCat = 'pdf'
@@ -60,20 +60,19 @@ const scenario1 = async(nftFile, nftFileName, assetName, assetDesc) => {
       break;
     default:
       fileCat = 'file'
-  }
+  };
+
   const properties = {
     "file_name": nftFileNameSplit[0],
-    "file_extension": ext,
+    "file_extension": fileExt,
     "file_size": nftFileStats.size,
     "file_category": fileCat
-  }
+  };
 
   const pinataMetadata = {
     name: assetName,
     keyvalues: properties
   };
-
-
 
   const pinataOptions = {
     cidVersion: 0,
@@ -83,20 +82,20 @@ const scenario1 = async(nftFile, nftFileName, assetName, assetDesc) => {
     pinataMetadata: pinataMetadata,
     pinataOptions: pinataOptions
   };
-  const resultFile = await pinata.pinFileToIPFS(nftFile, options)
-  console.log('The NFT original digital asset file: ', resultFile);
-  let metadata = config.arc3MetadataJSON
+
+  const resultFile = await pinata.pinFileToIPFS(nftFile, options);
+  console.log('The NFT original dAsset pinned to IPFS via Pinata: ', resultFile);
+  let metadata = config.arc3MetadataJSON;
 
   metadata.properties = properties;
   metadata.name = assetName;
   metadata.description = assetDesc;
-  metadata.image = 'ipfs://' + resultFile.IpfsHash;
-  metadata.image_integrity = resultFile.IpfsHash;
-  const resultMeta = await pinata.pinJSONToIPFS(metadata, options)
-  console.log('The NFT metadata JSON file: ',resultMeta);
- 
+  metadata.image = `ipfs://${resultFile.IpfsHash}`;
+  metadata.image_integrity = `sha256-${resultFile.IpfsHash}`;
+  metadata.image_mimetype = `${fileCat}/${fileExt}`;
 
-
+  const resultMeta = await pinata.pinJSONToIPFS(metadata, options);
+  console.log('The NFT metadata JSON file pinned to IPFS via Pinata: ', resultMeta);
 };
 
 const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
@@ -108,8 +107,8 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
   let nftFileStats = fs.statSync(`${nftWorkspacePath}/${nftFileName}`)
   let fileCat = 'image';
   let nftFileNameSplit = nftFileName.split('.')
-  let ext = nftFileNameSplit[1];
-  switch(ext) {
+  let fileExt = nftFileNameSplit[1];
+  switch (fileExt) {
     case 'txt':
       fileCat = 'text'
       break;
@@ -135,7 +134,7 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
     default:
       fileCat = 'file'
   }
-  
+
 
 
   let properties = {
@@ -165,20 +164,20 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
     pinataOptions: pinataOptions
   };
 
- 
+
 
   let result = await pinata.pinFileToIPFS(nftFile, options)
-  console.log('The NFT original digital asset file: ',result);
+  console.log('The NFT original digital asset file: ', result);
 
   metadata.image = 'ipfs://' + result.IpfsHash;
   metadata.image_integrity = result.IpfsHash;
- 
-  console.log('The NFT original prepared metadata: ',metadata)
+
+  console.log('The NFT original prepared metadata: ', metadata)
   let resultMeta = await pinata.pinJSONToIPFS(metadata, options)
-  console.log('The NFT metadata pinned to Pinata: ',resultMeta)
+  console.log('The NFT metadata pinned to Pinata: ', resultMeta)
 
   const folderCid = await ipfs.object.new({ template: 'unixfs-dir' })
-  console.log('The NFT folder CID: ',folderCid)
+  console.log('The NFT folder CID: ', folderCid)
   const finResJson = await ipfs.object.patch.addLink(folderCid, {
     name: `${nftFileNameSplit[0]}.json`,
     size: resultMeta.size,
@@ -190,10 +189,10 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
     size: result.size,
     cid: result.IpfsHash,
   })
- 
-  console.log('The NFT folder CID after added original NFT file link: ',finResNft)
+
+  console.log('The NFT folder CID after added original NFT file link: ', finResNft)
   let finPin = await ipfs.pin.add(finResNft);
-  console.log('The NFT folder CID pinned locally on IPFS: ',finPin);
+  console.log('The NFT folder CID pinned locally on IPFS: ', finPin);
   const finPinataPin = await pinata.pinByHash(finPin.toString())
   console.log('The NFT folder CID pinned to Pinata: ', finPinataPin)
 }

@@ -7,8 +7,10 @@ module.exports = {
     arc3MetadataJSON: {
         "name": "",
         "description": "",
-        "image": "/ipfs/",
+        "image": "ipfs://",
         "image_integrity": "sha256-",
+        "image_mimetype": "image/png",
+        "external_url": "https://",
         "properties": {
             "file_name": "",
             "file_extension": "",
