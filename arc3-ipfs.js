@@ -11,7 +11,7 @@ const nftWorkspacePath = __dirname+'/workspace';
 /* Use these two if you have a running IPFS node and want to connect to it for IPFS operations. */
 
 //const { create, CID } = require('ipfs-http-client')
-//const ipfs = create(config.ipfsNode)
+
 
 /* Use this instance for temporary lightweight IPFS instance inside your Node application process */
 const IPFS = require('ipfs-core');
@@ -89,6 +89,10 @@ const scenario1 = (nftFile, nftFileName, assetName, assetDesc) => {
 };
 
 const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
+  /* This is ipfs http client instance in case you have used ('ipfs-http-client') */
+  //const ipfs = create(config.ipfsNode)
+
+  /* This is lightweight ipfs application instance based on ('ipfs-core'), without the need for any external node */
   const ipfs = await IPFS.create();
   let nftFileStats = fs.statSync(`${nftWorkspacePath}/${nftFileName}`)
   let fileCat = 'image';
