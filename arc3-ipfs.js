@@ -166,11 +166,11 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
     pinataOptions: pinataOptions
   };
 
-  let result = await pinata.pinFileToIPFS(nftFile, options)
-  console.log('SC2: The NFT original dAsset pinned to IPFS via Pinata: ', result);
+  let resultFile = await pinata.pinFileToIPFS(nftFile, options)
+  console.log('SC2: The NFT original dAsset pinned to IPFS via Pinata: ', resultFile);
 
-  metadata.image = `ipfs://${result.IpfsHash}`;
-  metadata.image_integrity = `sha256-${result.IpfsHash}`;
+  metadata.image = `ipfs://${resultFile.IpfsHash}`;
+  metadata.image_integrity = `sha256-${resultFile.IpfsHash}`;
   console.log('SC2: The NFT prepared metadata: ', metadata);
 
   let resultMeta = await pinata.pinJSONToIPFS(metadata, options);
@@ -188,21 +188,21 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
 
   const finResNft = await ipfs.object.patch.addLink(finResJson, {
     name: nftFileName,
-    size: result.size,
-    cid: result.IpfsHash,
+    size: resultFile.size,
+    cid: resultFile.IpfsHash,
   });
   console.log('SC2: The NFT folder CID after added original NFT file link: ', finResNft);
 
   let finPin = await ipfs.pin.add(finResNft);
   console.log('SC2: The NFT folder CID pinned locally on IPFS: ', finPin);
-  
+
   const finPinataPin = await pinata.pinByHash(finPin.toString())
   console.log('SC2: The NFT folder CID pinned to Pinata: ', finPinataPin)
 }
 
 const testScenario1 = () => {
-  pinata.testAuthentication().then((result) => {
-    console.log('SC1 test connection to Pinata: ', result);
+  pinata.testAuthentication().then((res) => {
+    console.log('SC1 test connection to Pinata: ', res);
     let nftFileName = 'asa_ipfs.png'
     const sampleNftFile = fs.createReadStream(`${nftWorkspacePath}/${nftFileName}`);
     scenario1(sampleNftFile, nftFileName, 'Algorand ASA ARC3 IPFS SC1', 'This is a Scenario1 NFT created with metadata JSON in ARC3 compliance and using IPFS via Pinata API')
@@ -213,8 +213,8 @@ const testScenario1 = () => {
 }
 
 const testScenario2 = () => {
-  pinata.testAuthentication().then((result) => {
-    console.log('SC2 test connection to Pinata: ', result);
+  pinata.testAuthentication().then((res) => {
+    console.log('SC2 test connection to Pinata: ', res);
     let nftFileName = 'asa_ipfs.png'
     const sampleNftFile = fs.createReadStream(`${nftWorkspacePath}/${nftFileName}`);
     scenario2(sampleNftFile, nftFileName, 'Algorand ASA ARC3 IPFS SC2', 'This is a Scenario2 NFT created with metadata JSON in ARC3 compliance and using IPFS via Pinata API')
