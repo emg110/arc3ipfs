@@ -85,8 +85,8 @@ const scenario1 = async (nftFile, nftFileName, assetName, assetDesc) => {
 
   const resultFile = await pinata.pinFileToIPFS(nftFile, options);
   console.log('SC1: The NFT original dAsset pinned to IPFS via Pinata: ', resultFile);
-  let metadata = config.arc3MetadataJSON;
 
+  let metadata = config.arc3MetadataJSON;
   metadata.properties = properties;
   metadata.name = assetName;
   metadata.description = assetDesc;
@@ -196,8 +196,8 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
   let finPin = await ipfs.pin.add(finResNft);
   console.log('SC2: The NFT folder CID pinned locally on IPFS: ', finPin);
 
-  const finPinataPin = await pinata.pinByHash(finPin.toString())
-  console.log('SC2: The NFT folder CID pinned to Pinata: ', finPinataPin)
+  const finPinataPin = await pinata.pinByHash(finPin.toString());
+  console.log('SC2: The NFT folder CID pinned to Pinata: ', finPinataPin);
 }
 
 const testScenario1 = () => {
