@@ -8,6 +8,7 @@
       "start-web": "parcel index.html",     
       "ipfs-install": "npm install -g ipfs",      
       "ipfs-run": "jsipfs daemon",  
+      "bundle-bs58": "browserify node_modules/bs58/index.js -o ./js/bs58Bundle.js",  
       "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
