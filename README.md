@@ -13,7 +13,7 @@ This repository is a simple implementation of Algorand ASA Ops using IPFS integr
 
 [IPFS2BYTES32 Gists and examples repo](https://github.com/emg110/ipfs2bytes32)
 
-![ASA _--_ IPFS scenarios](https://user-images.githubusercontent.com/1900448/132204857-69626a0f-b986-48ef-bbc0-27082c0653a2.png)
+![ASA _--_ IPFS scenarios](./images/asa_ipfs.png)
 
 
 
