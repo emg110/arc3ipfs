@@ -2,8 +2,8 @@ module.exports = {
     algodClientUrl: "https://api.testnet.algoexplorer.io",
     algodClientPort: "",
     algodClientToken: "",
-    pinataApiKey: "1111111",
-    pinataApiSecret: "111111111",
+    pinataApiKey: "111111",
+    pinataApiSecret: "1111111",
     pinataFileUrl: "https://api.pinata.cloud/pinning/pinFileToIPFS",
     pinataJSONUrl: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
     ipfsNode: "http://localhost:5002",
@@ -24,12 +24,4 @@ module.exports = {
         }
     }
 
-}
-{
-   
-    "properties": {
-        "file_url": "https://s3.amazonaws.com/your-bucket/song/full/mysong.ogg",
-        "file_url_integrity": "sha256-7IGatqxLhUYkruDsEva52Ku43up6774yAmf0k98MXnU=",
-        "file_url_mimetype": "audio/ogg"
- }
 }

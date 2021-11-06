@@ -75,7 +75,16 @@ const createAccount = function () {
 };
 
 const convertIpfsCidV0ToByte32 = (cid) => {
-  return `${bs58.decode(cid).slice(2).toString('hex')}`;
+  let hex = `${bs58.decode(cid).slice(2).toString('hex')}`
+  let base64 = `${bs58.decode(cid).slice(2).toString('base64')}`
+  console.log('CID Hash Converted to hex: ', hex)
+ 
+  const buffer = Buffer.from(bs58.decode(cid).slice(2).toString('base64'), 'base64');
+  console.log('CID Hash Converted to Base64: ', base64)
+  const volBytes = buffer.length;
+  console.log('CID Hash Bytes volume is: ', `${volBytes} bytes, OK for ASA MetaDataHash field!`)
+
+  return {base64, hex};
 };
 
 const convertByte32ToIpfsCidV0 = (str) => {
@@ -94,16 +103,20 @@ const scenario1 = async (nftFile, nftFileName, assetName, assetDesc) => {
 
 
 
+  let kvProperties = {
+    "url": nftFileNameSplit[0],
+    "mimetype": `image/${fileExt}`,
+
+  };
   let properties = {
     "file_url": nftFileNameSplit[0],
     "file_url_integrity": "",
     "file_url_mimetype": `image/${fileExt}`,
 
   };
-
   const pinataMetadata = {
     name: assetName,
-    keyvalues: properties
+    keyvalues: kvProperties
   };
 
   const pinataOptions = {
@@ -119,13 +132,17 @@ const scenario1 = async (nftFile, nftFileName, assetName, assetDesc) => {
   console.log('Algorand NFT::ARC3::IPFS scenario 1: The NFT original digital asset pinned to IPFS via Pinata: ', resultFile);
 
   let metadata = config.arc3MetadataJSON;
-  properties['file_url_integrity'] =
-    metadata.properties = properties;
+
+  let integrity = convertIpfsCidV0ToByte32(resultFile.IpfsHash)
+  metadata.properties = properties;
+  metadata.properties.file_url = `https://ipfs.io/ipfs/${resultFile.IpfsHash}`;
+  metadata.properties.file_url_integrity = `${integrity.base64}`;
   metadata.name = `${assetName}@arc3`;
   metadata.description = assetDesc;
   metadata.image = `ipfs://${resultFile.IpfsHash}`;
-  metadata.image_integrity = `sha256-${convertIpfsCidV0ToByte32(resultFile.IpfsHash)}`;
+  metadata.image_integrity = `${integrity.base64}`;;
   metadata.image_mimetype = `${fileCat}/${fileExt}`;
+
   console.log('Algorand NFT::ARC3::IPFS scenario 1: The NFT prepared metadata: ', metadata);
 
   const resultMeta = await pinata.pinJSONToIPFS(metadata, options);
@@ -143,7 +160,11 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
   let nftFileNameSplit = nftFileName.split('.');
   let fileExt = nftFileNameSplit[1];
 
+  let kvProperties = {
+    "url": nftFileNameSplit[0],
+    "mimetype": `image/${fileExt}`,
 
+  };
 
   let properties = {
     "file_url": nftFileNameSplit[0],
@@ -161,7 +182,7 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
   }
   const pinataMetadata = {
     name: assetName,
-    keyvalues: properties
+    keyvalues: kvProperties
   };
 
   const pinataOptions = {
@@ -208,7 +229,7 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
   console.log('Algorand NFT::ARC3::IPFS scenario 2: The NFT folder CID pinned to Pinata: ', finPinataPin);
 }
 
-const createNftScenario1 = async() => {
+const createNftScenario1 = async () => {
   return await pinata.testAuthentication().then((res) => {
     console.log('Algorand NFT::ARC3::IPFS scenario 1 test connection to Pinata: ', res);
     let nftFileName = 'asa_ipfs.png'
@@ -307,14 +328,14 @@ async function createNFT(asset) {
   }
   process.exit();
 };
-//testScenario1()
-//testScenario2();
+createNftScenario1()
+//createNftScenario2();
 
 module.exports = {
   scenario2,
   scenario1,
-  testScenario2,
-  testScenario1,
+  createNftScenario2,
+  createNftScenario1,
   convertByte32ToIpfsCidV0,
   convertIpfsCidV0ToByte32,
 }
