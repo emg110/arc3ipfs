@@ -37,21 +37,18 @@ const scenario1 = async (nftFile, nftFileName, assetName, assetDesc) => {
 
   switch (fileExt) {
     case 'txt':
-      fileCat = 'tfileExt'
-      break;
-    case 'pdf':
-      fileCat = 'pdf'
+      fileCat = 'text'
       break;
     case 'mp4':
       fileCat = 'video'
       break;
-    case 'wav':
+    case 'ogg':
       fileCat = 'audio'
       break;
     case 'zip':
     case 'rar':
     case '7z':
-      fileCat = 'archive'
+      fileCat = 'application'
       break;
     case 'png':
     case 'jpg':
@@ -59,14 +56,14 @@ const scenario1 = async (nftFile, nftFileName, assetName, assetDesc) => {
       fileCat = 'image'
       break;
     default:
-      fileCat = 'file'
+      fileCat = 'text'
   };
 
-  const properties = {
-    "file_name": nftFileNameSplit[0],
-    "file_extension": fileExt,
-    "file_size": nftFileStats.size,
-    "file_category": fileCat
+  let properties = {
+    "file_url": nftFileNameSplit[0],
+    "file_url_integrity": "",
+    "file_url_mimetype": `${fileCat}/${fileExt}`,
+  
   };
 
   const pinataMetadata = {
@@ -116,19 +113,16 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
     case 'txt':
       fileCat = 'text'
       break;
-    case 'pdf':
-      fileCat = 'pdf'
-      break;
     case 'mp4':
       fileCat = 'video'
       break;
-    case 'wav':
+    case 'ogg':
       fileCat = 'audio'
       break;
     case 'zip':
     case 'rar':
     case '7z':
-      fileCat = 'archive'
+      fileCat = 'application'
       break;
     case 'png':
     case 'jpg':
@@ -136,14 +130,14 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
       fileCat = 'image'
       break;
     default:
-      fileCat = 'file'
+      fileCat = 'text'
   };
 
   let properties = {
-    "file_name": nftFileNameSplit[0],
-    "file_extension": nftFileNameSplit[1],
-    "file_size": nftFileStats.size,
-    "file_category": fileCat
+    "file_url": nftFileNameSplit[0],
+    "file_url_integrity": "",
+    "file_url_mimetype": `${fileCat}/${fileExt}`,
+  
   };
 
   let metadata = {
@@ -228,7 +222,7 @@ const testScenario2 = () => {
 
 
 //testScenario1()
-testScenario2();
+//testScenario2();
 
 
 module.exports = {
