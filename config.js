@@ -1,6 +1,9 @@
 module.exports = {
-    pinataApiKey: "111111111111111111",
-    pinataApiSecret: "111111111111111111",
+    algodClientUrl: "https://api.testnet.algoexplorer.io",
+    algodClientPort: "",
+    algodClientToken: "",
+    pinataApiKey: "1111111",
+    pinataApiSecret: "111111111",
     pinataFileUrl: "https://api.pinata.cloud/pinning/pinFileToIPFS",
     pinataJSONUrl: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
     ipfsNode: "http://localhost:5002",
