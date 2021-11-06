@@ -165,21 +165,20 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
     "mimetype": `image/${fileExt}`,
 
   };
-
   let properties = {
     "file_url": nftFileNameSplit[0],
     "file_url_integrity": "",
     "file_url_mimetype": `image/${fileExt}`,
 
   };
-
-  let metadata = {
+  let metadata = config.arc3MetadataJSON;
+  /* let metadata = {
     ...config.arc3MetadataJSON,
     properties: properties,
     name: assetName,
     description: assetDesc,
 
-  }
+  } */
   const pinataMetadata = {
     name: assetName,
     keyvalues: kvProperties
@@ -196,10 +195,16 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
 
   let resultFile = await pinata.pinFileToIPFS(nftFile, options)
   console.log('Algorand NFT::ARC3::IPFS scenario 2: The NFT original digital asset pinned to IPFS via Pinata: ', resultFile);
-
+  let integrity = convertIpfsCidV0ToByte32(resultFile.IpfsHash)
+  metadata.properties = properties;
+  metadata.properties.file_url = `https://ipfs.io/ipfs/${resultFile.IpfsHash}`;
+  metadata.properties.file_url_integrity = `${integrity.base64}`;
+  metadata.name = `${assetName}@arc3`;
+  metadata.description = assetDesc;
   metadata.image = `ipfs://${resultFile.IpfsHash}`;
-  metadata.image_integrity = `sha256-${resultFile.IpfsHash}`;
+  metadata.image_integrity = `${integrity.base64}`;;
   metadata.image_mimetype = `${fileCat}/${fileExt}`;
+
   console.log('Algorand NFT::ARC3::IPFS scenario 2: The NFT prepared metadata: ', metadata);
 
   let resultMeta = await pinata.pinJSONToIPFS(metadata, options);
@@ -216,7 +221,7 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
   console.log('Algorand NFT::ARC3::IPFS scenario 2: The NFT folder CID after added metadata JSON link: ', finResJson);
 
   const finResNft = await ipfs.object.patch.addLink(finResJson, {
-    name: nftFileName,
+    name: `${nftFileNameSplit[0]}.${fileExt}`,
     size: resultFile.size,
     cid: resultFile.IpfsHash,
   });
@@ -242,7 +247,7 @@ const createNftScenario1 = async () => {
 }
 
 const createNftScenario2 = () => {
-  pinata.testAuthentication().then((res) => {
+  return pinata.testAuthentication().then((res) => {
     console.log('Algorand NFT::ARC3::IPFS scenario 2 connection to Pinata: ', res);
     let nftFileName = 'asa_ipfs.png'
     const sampleNftFile = fs.createReadStream(`${nftWorkspacePath}/${nftFileName}`);
@@ -328,8 +333,8 @@ async function createNFT(asset) {
   }
   process.exit();
 };
-createNftScenario1()
-//createNftScenario2();
+//createNftScenario1()
+createNftScenario2();
 
 module.exports = {
   scenario2,
