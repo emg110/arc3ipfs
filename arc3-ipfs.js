@@ -260,7 +260,7 @@ const createNftScenario2 = async () => {
 
 async function createAsset(asset, account) {
   console.log("");
-  console.log("==> CREATE ASSET");
+  console.log("==> CREATE NFT");
   const accountInfo = await algodClient.accountInformation(account.addr).do();
   const startingAmount = accountInfo.amount;
   console.log("Created account balance: %d microAlgos", startingAmount);
@@ -328,7 +328,7 @@ async function createNFT() {
 
     const { assetID } = await createAsset(asset, account);
     console.log("Congratulations! You created your IPFS supporting, ARC3 complying NFT on Algorand! Check it by link below:");
-    console.log(`https://algoexplorer.io/asset/${assetID}`);
+    console.log(`https://testnet.algoexplorer.io/asset/${assetID}`);
 
 
   }
