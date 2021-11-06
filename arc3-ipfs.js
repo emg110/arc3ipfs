@@ -246,7 +246,7 @@ const createNftScenario1 = async () => {
   });
 }
 
-const createNftScenario2 = () => {
+const createNftScenario2 = async () => {
   return pinata.testAuthentication().then((res) => {
     console.log('Algorand NFT::ARC3::IPFS scenario 2 connection to Pinata: ', res);
     let nftFileName = 'asa_ipfs.png'
