@@ -11,6 +11,9 @@ module.exports = {
         "image_integrity": "sha256-",
         "image_mimetype": "image/png",
         "external_url": "https://github.com/emg110/arc3ipfs",
+        "animation_url": "",
+        "animation_url_integrity": "sha256-",
+        "animation_url_mimetype": "image/gif",
         "properties": {
             "file_name": "",
             "file_extension": "",
@@ -19,4 +22,12 @@ module.exports = {
         }
     }
 
+}
+{
+   
+    "properties": {
+        "file_url": "https://s3.amazonaws.com/your-bucket/song/full/mysong.ogg",
+        "file_url_integrity": "sha256-7IGatqxLhUYkruDsEva52Ku43up6774yAmf0k98MXnU=",
+        "file_url_mimetype": "audio/ogg"
+ }
 }
