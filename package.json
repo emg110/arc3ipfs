@@ -4,7 +4,7 @@
     "description": "",
     "main": "src/arc3-ipfs.js",
     "scripts": {
-      "start": "node ./arc3-ipfs.js",   
+      "start": "node ./index.js",   
       "start-web": "parcel index.html",     
       "ipfs-install": "npm install -g ipfs",      
       "ipfs-run": "jsipfs daemon",  

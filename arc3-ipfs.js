@@ -337,9 +337,7 @@ async function createNFT() {
   }
   process.exit();
 };
-//createNftScenario1()
-//createNftScenario2();
-createNFT()
+
 
 module.exports = {
   scenario2,
