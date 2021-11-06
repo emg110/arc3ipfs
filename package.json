@@ -13,9 +13,10 @@
     },
     "dependencies": {
       "@algonaut/algo-validation-agent": "latest",
-      "algorand-qrcode": "latest",
+      "qrcode": "latest",
       "algosdk": "latest",
       "moment": "latest",
+      "axios": "latest",
       "express": "latest",
       "node-base64-image": "latest",
       "metro4": "latest",
