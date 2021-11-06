@@ -26,35 +26,29 @@ const keypress = async () => {
     resolve()
   }))
 }
-const waitForConfirmation = async function (txId, timeout) {
-  if (algodClient == null || txId == null || timeout < 0) {
-    throw new Error("Bad arguments!");
-  }
-
-  const status = (await algodClient.status().do());
-  if (status === undefined) {
-    throw new Error("Unable to get node status!");
-  }
-
-  const startround = status["last-round"] + 1;
-  let currentround = startround;
-
-  while (currentround < (startround + timeout)) {
-    const pendingInfo = await algodClient.pendingTransactionInformation(txId).do();
-    if (pendingInfo !== undefined) {
-      if (pendingInfo["confirmed-round"] !== null && pendingInfo["confirmed-round"] > 0) {
-        return pendingInfo;
-      } else {
-        if (pendingInfo["pool-error"] != null && pendingInfo["pool-error"].length > 0) {
-          throw new Error("Transaction " + txId + " rejected - pool error: " + pendingInfo["pool-error"]);
-        }
-      }
+const waitForConfirmation = async function (txId) {
+  let response = await algodClient.status().do();
+  let lastround = response["last-round"];
+  while (true) {
+    const pendingInfo = await algodClient
+      .pendingTransactionInformation(txId)
+      .do();
+    if (
+      pendingInfo["confirmed-round"] !== null &&
+      pendingInfo["confirmed-round"] > 0
+    ) {
+      console.log(
+        "Transaction " +
+          txId +
+          " confirmed in round " +
+          pendingInfo["confirmed-round"]
+      );
+      break;
     }
-    await algodClient.statusAfterBlock(currentround).do();
-    currentround++;
+    lastround++;
+    await algodClient.statusAfterBlock(lastround).do();
   }
-  throw new Error("Transaction " + txId + " not confirmed after " + timeout + " rounds!");
-};
+}
 
 
 const createAccount = function () {
@@ -78,13 +72,13 @@ const convertIpfsCidV0ToByte32 = (cid) => {
   let hex = `${bs58.decode(cid).slice(2).toString('hex')}`
   let base64 = `${bs58.decode(cid).slice(2).toString('base64')}`
   console.log('CID Hash Converted to hex: ', hex)
- 
+
   const buffer = Buffer.from(bs58.decode(cid).slice(2).toString('base64'), 'base64');
   console.log('CID Hash Converted to Base64: ', base64)
   const volBytes = buffer.length;
   console.log('CID Hash Bytes volume is: ', `${volBytes} bytes, OK for ASA MetaDataHash field!`)
 
-  return {base64, hex};
+  return { base64, hex, buffer };
 };
 
 const convertByte32ToIpfsCidV0 = (str) => {
@@ -146,8 +140,14 @@ const scenario1 = async (nftFile, nftFileName, assetName, assetDesc) => {
   console.log('Algorand NFT::ARC3::IPFS scenario 1: The NFT prepared metadata: ', metadata);
 
   const resultMeta = await pinata.pinJSONToIPFS(metadata, options);
+  let jsonIntegrity = convertIpfsCidV0ToByte32(resultMeta.IpfsHash)
   console.log('Algorand NFT::ARC3::IPFS scenario 1: The NFT metadata JSON file pinned to IPFS via Pinata: ', resultMeta);
-
+  return {
+    name: `${assetName}@arc3`,
+    url: `ipfs://${resultMeta.IpfsHash}`,
+    metadata: jsonIntegrity.buffer,
+    integrity: jsonIntegrity.base64,
+  }
 
 };
 
@@ -239,10 +239,10 @@ const createNftScenario1 = async () => {
     console.log('Algorand NFT::ARC3::IPFS scenario 1 test connection to Pinata: ', res);
     let nftFileName = 'asa_ipfs.png'
     const sampleNftFile = fs.createReadStream(`${nftWorkspacePath}/${nftFileName}`);
-    scenario1(sampleNftFile, nftFileName, 'Algorand NFT::ARC3::IPFS scenario 1: ', 'This is a Scenario1 NFT created with metadata JSON in ARC3 compliance and using IPFS via Pinata API')
+    return scenario1(sampleNftFile, nftFileName, 'NFT::ARC3::IPFS::1', 'This is a Scenario1 NFT created with metadata JSON in ARC3 compliance and using IPFS via Pinata API')
 
   }).catch((err) => {
-    console.log(err);
+    return console.log(err);
   });
 }
 
@@ -251,7 +251,7 @@ const createNftScenario2 = () => {
     console.log('Algorand NFT::ARC3::IPFS scenario 2 connection to Pinata: ', res);
     let nftFileName = 'asa_ipfs.png'
     const sampleNftFile = fs.createReadStream(`${nftWorkspacePath}/${nftFileName}`);
-    scenario2(sampleNftFile, nftFileName, 'Algorand NFT::ARC3::IPFS scenario 2: ', 'This is a Scenario2 NFT created with metadata JSON in ARC3 compliance and using IPFS via Pinata API')
+    scenario2(sampleNftFile, nftFileName, 'NFT::ARC3::IPFS::2', 'This is a Scenario2 NFT created with metadata JSON in ARC3 compliance and using IPFS via Pinata API')
 
   }).catch((err) => {
     console.log(err);
@@ -268,7 +268,7 @@ async function createAsset(asset, account) {
   const params = await algodClient.getTransactionParams().do();
 
   const defaultFrozen = false;
-  const unitName = asset.unitName;
+  const unitName = 'nft';
   const assetName = asset.name;
   const url = asset.url;
 
@@ -279,9 +279,12 @@ async function createAsset(asset, account) {
   const decimals = 0;
   const total = 1;
   const metadata = asset.metadata;
-  const imageIntegrity = asset.imageIntegrity;
-
-  console.log("image_integrity : " + imageIntegrity);
+  const metadataUint8Array = new Uint8Array(metadata);
+  const length = metadataUint8Array.length;
+  const integrity = asset.integrity;
+  console.log('ASA MetaDataHash: ', metadataUint8Array)
+  console.log('ASA MetaDataHash Length: ', length)
+  console.log("nft_integrity : " + integrity);
 
   const txn = algosdk.makeAssetCreateTxnWithSuggestedParamsFromObject({
     from: account.addr,
@@ -290,7 +293,7 @@ async function createAsset(asset, account) {
     assetName,
     unitName,
     assetURL: url,
-    assetMetadataHash: metadata,
+    assetMetadataHash: metadataUint8Array,
     defaultFrozen,
     freeze: freezeAddr,
     manager: managerAddr,
@@ -300,23 +303,24 @@ async function createAsset(asset, account) {
   });
 
   const rawSignedTxn = txn.signTxn(account.sk);
-  const tx = (await algodClient.sendRawTransaction(rawSignedTxn).do());
+  const tx = await algodClient.sendRawTransaction(rawSignedTxn).do();
   let assetID = null;
-  const confirmedTxn = await waitForConfirmation(algodClient, tx.txId, 4);
+  const confirmedTxn = await waitForConfirmation(tx.txId);
 
-  console.log("Transaction " + tx.txId + " confirmed in round " + confirmedTxn["confirmed-round"]);
+  
   const ptx = await algodClient.pendingTransactionInformation(tx.txId).do();
   assetID = ptx["asset-index"];
 
-  await printCreatedAsset(algodClient, account.addr, assetID);
-  await printAssetHolding(algodClient, account.addr, assetID);
+  console.log('Account: ',account.addr,' Has created ASA with ID: ', assetID);
+
 
   return { assetID };
 
 }
 
-async function createNFT(asset) {
-
+async function createNFT() {
+  const asset = await createNftScenario1()
+  console.log(asset)
   try {
     let account = createAccount();
     console.log("Press any key when the account is funded...");
@@ -334,7 +338,8 @@ async function createNFT(asset) {
   process.exit();
 };
 //createNftScenario1()
-createNftScenario2();
+//createNftScenario2();
+createNFT()
 
 module.exports = {
   scenario2,
@@ -343,4 +348,7 @@ module.exports = {
   createNftScenario1,
   convertByte32ToIpfsCidV0,
   convertIpfsCidV0ToByte32,
+  createAsset,
+  createAccount,
+  createNFT,
 }
