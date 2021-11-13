@@ -7,7 +7,7 @@ This repository is a simple implementation of Algorand ASA based NFT generation 
 
 [Algorand ARC0003](https://github.com/algorandfoundation/ARCs/blob/main/ARCs/arc-0003.md)
 
-[Algorand Developers Portal Solution](https://developer.algorand.org/solutions/working-algorand-nfts-and-ipfs/)
+[Algorand Developers Portal Solution](https://developer.algorand.org/solutions/minting-nfts-on-algorand-using-ipfs/)
 
 [IPFS2BYTES32 Gists and examples repo](https://github.com/emg110/ipfs2bytes32)
 
