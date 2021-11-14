@@ -130,11 +130,11 @@ const scenario1 = async (nftFile, nftFileName, assetName, assetDesc) => {
   let integrity = convertIpfsCidV0ToByte32(resultFile.IpfsHash)
   metadata.properties = properties;
   metadata.properties.file_url = `https://ipfs.io/ipfs/${resultFile.IpfsHash}`;
-  metadata.properties.file_url_integrity = `${integrity.base64}`;
+  metadata.properties.file_url_integrity = `sha256-${integrity.base64}`;
   metadata.name = `${assetName}@arc3`;
   metadata.description = assetDesc;
   metadata.image = `ipfs://${resultFile.IpfsHash}`;
-  metadata.image_integrity = `${integrity.base64}`;;
+  metadata.image_integrity = `sha256-${integrity.base64}`;;
   metadata.image_mimetype = `${fileCat}/${fileExt}`;
 
   console.log('Algorand NFT::ARC3::IPFS scenario 1: The NFT prepared metadata: ', metadata);
@@ -198,11 +198,11 @@ const scenario2 = async (nftFile, nftFileName, assetName, assetDesc) => {
   let integrity = convertIpfsCidV0ToByte32(resultFile.IpfsHash)
   metadata.properties = properties;
   metadata.properties.file_url = `https://ipfs.io/ipfs/${resultFile.IpfsHash}`;
-  metadata.properties.file_url_integrity = `${integrity.base64}`;
+  metadata.properties.file_url_integrity = `sha256-${integrity.base64}`;
   metadata.name = `${assetName}@arc3`;
   metadata.description = assetDesc;
   metadata.image = `ipfs://${resultFile.IpfsHash}`;
-  metadata.image_integrity = `${integrity.base64}`;;
+  metadata.image_integrity = `sha256-${integrity.base64}`;;
   metadata.image_mimetype = `${fileCat}/${fileExt}`;
 
   console.log('Algorand NFT::ARC3::IPFS scenario 2: The NFT prepared metadata: ', metadata);
